@@ -1,19 +1,18 @@
 import React from "react";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
+import MainPage from "./pages/mainPage/mainPage";
+import HeaderPage from "./pages/header/headerPage";
+import LoginPage from "./pages/loginPage/loginPage";
 function App() {
   return (
-    <main className="app">
-      <h1>Virtual Try-On</h1>
-      <p className="subtitle">
-        Upload a full-body photo and a garment to preview how it might look on
-        you.
-      </p>
-
-      <div className="upload-section">
-        <h1>Upload your photo</h1>
-      </div>
-
-      <button className="generate-btn">Generate preview</button>
-    </main>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HeaderPage />}>
+          <Route index element={<MainPage />} />
+          <Route path="login" element={<LoginPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
