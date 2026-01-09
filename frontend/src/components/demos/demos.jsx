@@ -3,6 +3,7 @@ import React from "react";
 import image1 from "../../../assets/model2.png";
 import image2 from "../../../assets/garment2.png";
 import image3 from "../../../assets/result2.png";
+import { red } from "@mui/material/colors";
 
 function Demos() {
   function handleShowDemos() {
@@ -25,14 +26,17 @@ function Demos() {
           <Box
             sx={{
               height: 52,
-              display: "flex",
               alignItems: "center",
               px: 4,
-              fontFamily:
-                '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
             }}
           >
-            <Typography textAlign={"center"}>
+            <Typography
+              textAlign="center"
+              sx={{
+                fontFamily:
+                  '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+              }}
+            >
               Try-on examples in pairs of person and garment images
             </Typography>
           </Box>

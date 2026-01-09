@@ -1,7 +1,8 @@
 import React from "react";
 import HeaderPage from "../header/headerPage";
 import Demos from "../../components/demos/demos";
-import { Button } from "@mui/material";
+import { Button, Typography, Box } from "@mui/material";
+import Uploads from "../../components/uploadImages/uploads";
 
 function MainPage() {
   function handleGeneratePreview() {
@@ -17,6 +18,8 @@ function MainPage() {
       <div className="upload-section">
         <h2>Upload your photo</h2>
       </div>
+      <Uploads />
+      <Typography>-</Typography>
       <Button
         variant="contained"
         sx={{
@@ -34,6 +37,9 @@ function MainPage() {
       >
         Generate preview
       </Button>
+      <Box>
+        <Typography>-</Typography>
+      </Box>
       <Demos />
     </main>
   );
