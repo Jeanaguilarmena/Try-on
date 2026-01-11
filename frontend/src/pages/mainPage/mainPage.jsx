@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import HeaderPage from "../header/headerPage";
 import Demos from "../../components/demos/demos";
 import { Button, Typography, Box } from "@mui/material";
-import Uploads from "../../components/uploadImages/uploads";
+import UploadCard from "../../components/uploadImages/uploads";
 
 function MainPage() {
+  const [personImage, setPersonImage] = useState(null);
+  const [garmentImage, setGarmentImage] = useState(null);
+
   function handleGeneratePreview() {
-    console.log("Generating preview");
+    console.log("Generating preview with", personImage, "and", garmentImage);
   }
   return (
     <main className="app">
@@ -18,7 +21,22 @@ function MainPage() {
       <div className="upload-section">
         <h2>Upload your photo</h2>
       </div>
-      <Uploads />
+      <Box
+        sx={{
+          display: "flex",
+          gap: 3,
+          justifyContent: "center",
+        }}
+      >
+        <UploadCard
+          title="Add a photo of yours"
+          onUpload={(file) => setPersonImage(file)}
+        />
+        <UploadCard
+          title="Add your garment image"
+          onUpload={(file) => setGarmentImage(file)}
+        />
+      </Box>
       <Typography>-</Typography>
       <Button
         variant="contained"

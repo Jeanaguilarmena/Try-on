@@ -1,24 +1,30 @@
-import { Box, Button, Container, Typography } from "@mui/material";
-import React from "react";
+import { Box, Button, Container, Typography, Card, Modal } from "@mui/material";
+import React, { useState } from "react";
 import image1 from "../../../assets/model2.png";
 import image2 from "../../../assets/garment2.png";
 import image3 from "../../../assets/result2.png";
 import { red } from "@mui/material/colors";
+import DemoModal from "../demoModal/demoModal";
 
 function Demos() {
-  function handleShowDemos() {
-    console.log("Demos shown");
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [shownModal, setShownModal] = useState(false);
+
+  function handleShowDemos(img) {
+    console.log(img);
+    setSelectedImage(img);
   }
 
   const images = [image1, image2, image3];
   return (
-    <Box
+    <Card
       sx={{
         position: "sticky",
         top: 0,
         zIndex: 1100,
         backgroundColor: "#fff",
         borderBottom: "1px solid #e5e5e5",
+        borderRadius: 4,
       }}
     >
       <Box>
@@ -43,6 +49,7 @@ function Demos() {
         </Container>
         {images.map((img, index) => (
           <Box
+            onClick={() => handleShowDemos(img)}
             key={index}
             component="img"
             src={img}
@@ -51,13 +58,28 @@ function Demos() {
               height: 100,
               width: "auto",
               marginLeft: 2,
-              borderRadius: 2,
+              borderRadius: 4,
               boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+              cursor: "pointer",
+              border: "1px solid rgba(0,0,0,0.08)",
+              justifyContent: "space-between",
+              transition: "all 0.25s ease",
+
+              "&:hover": {
+                boxShadow: "0 20px 50px rgba(0,0,0,0.16)",
+                transform: "translateY(-2px)",
+              },
             }}
           />
         ))}
       </Box>
-    </Box>
+      {selectedImage && (
+        <DemoModal
+          image={selectedImage}
+          onClose={() => setSelectedImage(null)}
+        />
+      )}
+    </Card>
   );
 }
 
