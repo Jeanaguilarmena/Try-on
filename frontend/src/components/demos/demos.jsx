@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import image1 from "../../../assets/model2.png";
 import image2 from "../../../assets/garment2.png";
 import image3 from "../../../assets/result2.png";
-import { red } from "@mui/material/colors";
 import DemoModal from "../demoModal/demoModal";
 
 function Demos() {
@@ -11,7 +10,6 @@ function Demos() {
   const [shownModal, setShownModal] = useState(false);
 
   function handleShowDemos(img) {
-    console.log(img);
     setSelectedImage(img);
   }
 

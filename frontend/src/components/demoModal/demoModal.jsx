@@ -7,32 +7,34 @@ function DemoModal({ image, onClose }) {
       open={Boolean(image)}
       onClose={onClose}
       TransitionComponent={Fade}
-      transitionDuration={300}
+      transitionDuration={250}
       PaperProps={{
         sx: {
-          borderRadius: 4,
-          background: "rgba(255,255,255,0.75)",
-          backdropFilter: "blur(20px)",
-          boxShadow: "0 30px 60px rgba(0,0,0,0.25)",
+          borderRadius: 3,
+          background: "rgba(255,255,255,0.85)",
+          backdropFilter: "blur(24px) saturate(180%)",
+          boxShadow: "0 20px 40px rgba(0,0,0,0.18)",
           overflow: "hidden",
         },
       }}
       BackdropProps={{
         sx: {
-          backgroundColor: "rgba(0,0,0,0.35)",
-          backdropFilter: "blur(4px)",
+          backgroundColor: "rgba(0,0,0,0.4)",
+          backdropFilter: "blur(6px)",
         },
       }}
     >
-      <Box sx={{ p: 2 }}>
+      {/* Marco fino */}
+      <Box sx={{ p: 1 }}>
         <Box
           component="img"
           src={image}
           sx={{
             width: "100%",
-            maxWidth: 520,
-            borderRadius: 3,
+            maxWidth: 540,
             display: "block",
+            borderRadius: 2,
+            boxShadow: "0 1px 2px rgba(0,0,0,0.08)",
           }}
         />
       </Box>

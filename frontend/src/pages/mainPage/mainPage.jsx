@@ -1,14 +1,24 @@
 import React, { useState } from "react";
 import HeaderPage from "../header/headerPage";
 import Demos from "../../components/demos/demos";
-import { Button, Typography, Box } from "@mui/material";
+import { Button, Typography, Box, Card } from "@mui/material";
 import UploadCard from "../../components/uploadImages/uploads";
+import UploadPreview from "../../components/uploadPreview/uploadPreview";
 
 function MainPage() {
   const [personImage, setPersonImage] = useState(null);
   const [garmentImage, setGarmentImage] = useState(null);
+  const personPreviewURL = personImage
+    ? URL.createObjectURL(personImage)
+    : null;
+  const garmentPreviewURL = garmentImage
+    ? URL.createObjectURL(garmentImage)
+    : null;
 
   function handleGeneratePreview() {
+    if (!personImage || !garmentImage) {
+      console.log("You need two images");
+    }
     console.log("Generating preview with", personImage, "and", garmentImage);
   }
   return (
@@ -28,14 +38,29 @@ function MainPage() {
           justifyContent: "center",
         }}
       >
-        <UploadCard
-          title="Add a photo of yours"
-          onUpload={(file) => setPersonImage(file)}
-        />
-        <UploadCard
-          title="Add your garment image"
-          onUpload={(file) => setGarmentImage(file)}
-        />
+        {!personImage ? (
+          <UploadCard
+            title="Add a photo of yours"
+            onUpload={(file) => setPersonImage(file)}
+          />
+        ) : (
+          <UploadPreview
+            previewURL={personPreviewURL}
+            onClose={() => setPersonImage(null)}
+          />
+        )}
+
+        {!garmentImage ? (
+          <UploadCard
+            title="Add your garment image"
+            onUpload={(file) => setGarmentImage(file)}
+          />
+        ) : (
+          <UploadPreview
+            previewURL={garmentPreviewURL}
+            onClose={() => setGarmentImage(null)}
+          />
+        )}
       </Box>
       <Typography>-</Typography>
       <Button
