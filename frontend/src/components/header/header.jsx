@@ -1,152 +1,90 @@
-import { useState, useRef } from "react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import TextField from "@mui/material/TextField";
-import ClickAwayListener from "@mui/material/ClickAwayListener";
-import Collapse from "@mui/material/Collapse";
-import { useNavigate, useParams } from "react-router-dom";
-import SearchIcon from "../../../assets/Search-Icon.png";
+import { useRef } from "react";
+import { AppBar, Toolbar, Container, Box, Button, Stack } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
-  const [showSearch, setShowSearch] = useState(false);
   const navigate = useNavigate();
   const inputRef = useRef(null);
-  const authed = false;
 
   const menu = [
-    { label: "Login", path: "/login" },
-    { label: "profile", path: "/profile" },
+    { label: "Home", path: "/home" },
+    { label: "Profile", path: "profile" },
+    { label: "Logout", path: "/login" },
   ];
 
-  const toggleSearch = () => {
-    setShowSearch((prev) => !prev);
-    setTimeout(() => inputRef.current?.focus(), 150);
-  };
-
   return (
-    <Box
-      sx={{
-        position: "sticky",
-        top: 0,
-        zIndex: 1100,
-        backgroundColor: "#fff",
-        borderBottom: "1px solid #e5e5e5",
-      }}
-    >
-      <ClickAwayListener onClickAway={() => setShowSearch(false)}>
-        <Box>
-          {/* Header bar */}
-          <Container>
-            <Box
+    <Box>
+      <AppBar
+        position="sticky"
+        elevation={0}
+        sx={{
+          bgcolor: "transparent",
+          backgroundImage: "none",
+          mt: 2,
+        }}
+      >
+        <Container maxWidth="lg">
+          <Toolbar
+            sx={(theme) => ({
+              minHeight: 48,
+              px: 2,
+              borderRadius: "999px",
+              backdropFilter: "blur(24px)",
+              backgroundColor:
+                theme.palette.mode === "light"
+                  ? "rgba(255,255,255,0.6)"
+                  : "rgba(0,0,0,0.5)",
+              border: "1px solid",
+              borderColor: "divider",
+              boxShadow:
+                theme.palette.mode === "light"
+                  ? "0 4px 20px rgba(0,0,0,0.08)"
+                  : "0 4px 20px rgba(0,0,0,0.5)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            })}
+          >
+            <Button
+              disableRipple
+              onClick={() => navigate("/home")}
               sx={{
-                height: 52,
-                display: "flex",
-                alignItems: "center",
-                px: 4,
-                fontFamily:
-                  '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+                textTransform: "none",
+                fontWeight: 600,
+                fontSize: "1rem",
+                color: "text.primary",
+                px: 1,
               }}
             >
-              {/* Logo */}
-              <Button
-                onClick={() => navigate("/home")}
-                disableRipple
-                sx={{
-                  color: "#1d1d1f",
-                  textTransform: "none",
-                  fontSize: 18,
-                  fontWeight: 500,
-                  padding: 0,
-                }}
-              >
-                ⭑ Try-On!
-              </Button>
+              ⭑ Try-On
+            </Button>
 
-              {/* Navegación */}
-              <Box sx={{ display: "flex", gap: 3, ml: "auto", mr: 2 }}>
-                {menu.map((item) => (
-                  <Button
-                    key={item.label}
-                    onClick={() => navigate(item.path)}
-                    disableRipple
-                    sx={{
-                      color: "#1d1d1f",
-                      textTransform: "none",
-                      fontSize: 14,
-                      fontWeight: 400,
-                      padding: 0,
-                      minWidth: "auto",
-                    }}
-                  >
-                    {item.label}
-                  </Button>
-                ))}
-              </Box>
-
-              {/* Search trigger */}
-              <Button
-                onClick={toggleSearch}
-                disableRipple
-                sx={{
-                  color: "#1d1d1f",
-                  fontSize: 14,
-                  padding: 0,
-                  minWidth: "auto",
-                }}
-              >
-                {<img src={SearchIcon} alt="Search" width={20} height={20} />}
-              </Button>
-            </Box>
-          </Container>
-
-          {/* Search panel (debajo del header) */}
-          <Collapse in={showSearch} timeout={200}>
-            <Box
-              sx={{
-                borderTop: "1px solid #e5e5e5",
-                backgroundColor: "#fff",
-              }}
-            >
-              <Container>
-                <Box
+            <Stack direction="row" spacing={3} alignItems="center">
+              {menu.map((item) => (
+                <Button
+                  key={item.label}
+                  disableRipple
+                  onClick={() => navigate(item.path)}
                   sx={{
-                    py: 3,
-                    px: 4,
-                    display: "flex",
-                    justifyContent: "center",
+                    textTransform: "none",
+                    fontSize: "0.85rem",
+                    fontWeight: 400,
+                    color: "text.primary",
+                    minWidth: "auto",
+                    px: 0,
+                    "&:hover": {
+                      backgroundColor: "transparent",
+                      opacity: 0.7,
+                    },
                   }}
                 >
-                  <TextField
-                    inputRef={inputRef}
-                    fullWidth
-                    placeholder="Search..."
-                    variant="outlined"
-                    onKeyDown={(e) => {
-                      if (e.key === "Escape") setShowSearch(false);
-                    }}
-                    sx={{
-                      maxWidth: 520,
-                      "& .MuiOutlinedInput-root": {
-                        height: 48,
-                        borderRadius: "12px",
-                        backgroundColor: "#f5f5f7",
-                        fontSize: 15,
-                        "& fieldset": {
-                          borderColor: "transparent",
-                        },
-                        "&.Mui-focused fieldset": {
-                          borderColor: "#0071e3",
-                        },
-                      },
-                    }}
-                  />
-                </Box>
-              </Container>
-            </Box>
-          </Collapse>
-        </Box>
-      </ClickAwayListener>
+                  {item.label}
+                </Button>
+              ))}
+            </Stack>
+          </Toolbar>
+        </Container>
+      </AppBar>
     </Box>
   );
 }

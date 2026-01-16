@@ -5,6 +5,7 @@ import HeaderPage from "./pages/header/headerPage";
 import LoginPage from "./pages/loginPage/loginPage";
 import AuthApp from "./AuthApp";
 import { AuthProvider } from "./context/authContext";
+import ProfilePage from "./pages/profilePage/profilePage";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             <Route path="/home" element={<HeaderPage />}>
               <Route index element={<MainPage />} />
               <Route path="login" element={<LoginPage />} />
+              <Route path="profile" element={<ProfilePage />} />
             </Route>
           </Route>
 
