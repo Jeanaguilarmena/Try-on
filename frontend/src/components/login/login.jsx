@@ -8,8 +8,17 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
+import { useAuth } from "../../context/authContext";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const { setUser } = useAuth();
+  const navigate = useNavigate();
+
+  function handleClick() {
+    setUser("Jean");
+    navigate("/home");
+  }
   return (
     <Box
       sx={{
@@ -39,6 +48,7 @@ function Login() {
             </Box>
 
             <Button
+              onClick={handleClick}
               variant="contained"
               sx={{
                 backgroundColor: "#1D1D1F", // azul Apple

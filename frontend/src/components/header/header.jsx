@@ -14,7 +14,10 @@ export default function Header() {
   const inputRef = useRef(null);
   const authed = false;
 
-  const menu = [{ label: "Login", path: "/login" }];
+  const menu = [
+    { label: "Login", path: "/login" },
+    { label: "profile", path: "/profile" },
+  ];
 
   const toggleSearch = () => {
     setShowSearch((prev) => !prev);
@@ -47,7 +50,7 @@ export default function Header() {
             >
               {/* Logo */}
               <Button
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/home")}
                 disableRipple
                 sx={{
                   color: "#1d1d1f",
