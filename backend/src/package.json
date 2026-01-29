@@ -1,0 +1,15 @@
+{
+  "name": "try-on-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.0",
+    "firebase": "^12.8.0",
+    "firebase-admin": "^13.6.0"
+  }
+}
