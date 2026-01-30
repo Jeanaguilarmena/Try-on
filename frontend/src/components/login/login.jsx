@@ -7,18 +7,21 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useAuth } from "../../context/authContext";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function Login() {
-  const { setUser } = useAuth();
+  const { authed, isLoading, loginwithgoogle } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
-  function handleClick() {
-    setUser("Jean");
-    navigate("/home");
-  }
+  useEffect(() => {
+    if (authed && !isLoading) {
+      navigate("/home");
+    }
+  }, [authed, isLoading, navigate]);
+
   return (
     <Box
       sx={{
@@ -48,7 +51,7 @@ function Login() {
             </Box>
 
             <Button
-              onClick={handleClick}
+              onClick={loginwithgoogle}
               variant="contained"
               sx={{
                 backgroundColor: "#1D1D1F", // azul Apple

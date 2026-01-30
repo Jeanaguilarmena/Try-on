@@ -1,15 +1,17 @@
 import { useRef } from "react";
 import { AppBar, Toolbar, Container, Box, Button, Stack } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/authContext";
 
 export default function Header() {
   const navigate = useNavigate();
   const inputRef = useRef(null);
+  const { logout } = useAuth();
 
   const menu = [
-    { label: "Home", path: "/home" },
-    { label: "Profile", path: "profile" },
-    { label: "Logout", path: "/login" },
+    { label: "Home", function: () => navigate("/home") },
+    { label: "Profile", function: () => navigate("profile") },
+    { label: "Logout", function: logout },
   ];
 
   return (
@@ -64,7 +66,7 @@ export default function Header() {
                 <Button
                   key={item.label}
                   disableRipple
-                  onClick={() => navigate(item.path)}
+                  onClick={item.function}
                   sx={{
                     textTransform: "none",
                     fontSize: "0.85rem",
