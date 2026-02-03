@@ -1,4 +1,4 @@
-import { auth } from "firebase-admin";
+import { auth } from "../config/firebase.js";
 
 export const firebaseAuthMiddleware = async (req, res, next) => {
     const token = req.headers.authorization?.split(" ")[1];
@@ -7,7 +7,7 @@ export const firebaseAuthMiddleware = async (req, res, next) => {
         return res.status(401).json({ message: "No token provided" });
     }
 
-    const decodedToken = await auth().verifyIdToken(token);
+    const decodedToken = await auth.verifyIdToken(token);
     req.user = decodedToken;
 
     next();

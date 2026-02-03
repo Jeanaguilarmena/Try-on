@@ -31,6 +31,15 @@ export const AuthProvider = ({ children }) => {
     try {
       const result = await signInWithPopup(auth, provider);
       setUser(result.user);
+      const token = await result.user.getIdToken();
+
+      await fetch("http://localhost:3000/api/users/me", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       setAuthed(true);
       return result.user;
     } catch (error) {

@@ -1,9 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar, Box, Button, Card, Typography } from "@mui/material";
 import image from "../../../assets/generatedImage.png";
 import ImagesGrid from "../imagesGrid/imagesGrid";
+import { useAuth } from "../../context/authContext";
 
 function Profile() {
+  const [userProfile, setUserProfile] = useState(null);
+  const { user } = useAuth();
+
+  useEffect(() => {
+    async function fetchUserProfile() {
+      const token = await user.getIdToken();
+
+      const res = await fetch("http://localhost:3000/api/users/me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+      setUserProfile(data);
+      console.log("User profile data:", data);
+    }
+
+    fetchUserProfile();
+  }, [user]);
+
   return (
     <Box
       sx={{
@@ -57,7 +78,7 @@ function Profile() {
                 lineHeight: 1.2,
               }}
             >
-              Jean Aguilar
+              {userProfile ? userProfile.name : "Loading..."}
             </Typography>
 
             <Typography
@@ -67,7 +88,7 @@ function Profile() {
                 mt: 0.5,
               }}
             >
-              Software Developer
+              {userProfile ? userProfile.description : "Loading..."}
             </Typography>
           </Box>
         </Box>
