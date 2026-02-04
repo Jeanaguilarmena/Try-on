@@ -21,5 +21,19 @@ export const createUser = async (decodeUser) => {
         }
 
         await ref.set(newUser);
+        return true;
     }
+    return false;
+}
+
+export const updateUserProfile = async (id, profileData) => {
+    const ref = db.collection("users").doc(id);
+
+    await ref.update({
+        ...profileData,
+        updatedAt: new Date()
+    })
+
+    const snap = await ref.get();
+    return snap.data();
 }

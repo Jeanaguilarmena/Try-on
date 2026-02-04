@@ -6,6 +6,7 @@ import LoginPage from "./pages/loginPage/loginPage";
 import AuthApp from "./AuthApp";
 import { AuthProvider } from "./context/authContext";
 import ProfilePage from "./pages/profilePage/profilePage";
+import EditProfilePage from "./pages/editProfilePage/editProfilePage";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
               <Route index element={<MainPage />} />
               <Route path="login" element={<LoginPage />} />
               <Route path="profile" element={<ProfilePage />} />
+              <Route path="profile/edit" element={<EditProfilePage />} />
             </Route>
           </Route>
 

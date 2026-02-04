@@ -3,10 +3,16 @@ import { Avatar, Box, Button, Card, Typography } from "@mui/material";
 import image from "../../../assets/generatedImage.png";
 import ImagesGrid from "../imagesGrid/imagesGrid";
 import { useAuth } from "../../context/authContext";
+import { useNavigate } from "react-router-dom";
 
 function Profile() {
   const [userProfile, setUserProfile] = useState(null);
   const { user } = useAuth();
+  const navigate = useNavigate();
+
+  function handleEditProfile() {
+    navigate("edit");
+  }
 
   useEffect(() => {
     async function fetchUserProfile() {
@@ -101,6 +107,7 @@ function Profile() {
           }}
         />
         <Button
+          onClick={handleEditProfile}
           sx={{
             px: 3,
             py: 1,
