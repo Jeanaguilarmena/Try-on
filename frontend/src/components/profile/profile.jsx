@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Avatar, Box, Button, Card, Typography } from "@mui/material";
 import image from "../../../assets/generatedImage.png";
 import ImagesGrid from "../imagesGrid/imagesGrid";
 import { useAuth } from "../../context/authContext";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { fetchUserProfile } from "../../api/user.api";
 
 function Profile() {
-  const [userProfile, setUserProfile] = useState(null);
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -14,22 +15,27 @@ function Profile() {
     navigate("edit");
   }
 
-  useEffect(() => {
-    async function fetchUserProfile() {
-      const token = await user.getIdToken();
+  const {
+    data: userProfile,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["userProfile", user?.uid],
+    queryFn: () => fetchUserProfile(user),
+    enabled: !!user,
+  });
 
-      const res = await fetch("http://localhost:3000/api/users/me", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = await res.json();
-      setUserProfile(data);
-      console.log("User profile data:", data);
-    }
+  if (isLoading) {
+    return <Box sx={{ p: 4 }}>👤 Loading profile...</Box>;
+  }
 
-    fetchUserProfile();
-  }, [user]);
+  if (isError) {
+    return <Box sx={{ p: 4, color: "red" }}>Error loading profile</Box>;
+  }
+
+  if (!userProfile) {
+    return <Box sx={{ p: 4 }}>👤 Loading profile...</Box>;
+  }
 
   return (
     <Box
@@ -84,7 +90,7 @@ function Profile() {
                 lineHeight: 1.2,
               }}
             >
-              {userProfile ? userProfile.name : "Loading..."}
+              {userProfile.name}
             </Typography>
 
             <Typography
@@ -94,7 +100,7 @@ function Profile() {
                 mt: 0.5,
               }}
             >
-              {userProfile ? userProfile.description : "Loading..."}
+              {userProfile.description}
             </Typography>
           </Box>
         </Box>

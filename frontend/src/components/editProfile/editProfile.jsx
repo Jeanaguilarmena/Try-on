@@ -12,8 +12,10 @@ import {
 import PhotoCameraOutlinedIcon from "@mui/icons-material/PhotoCameraOutlined";
 import { useAuth } from "../../context/authContext";
 import image from "../../../assets/generatedImage.png";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 function EditProfile() {
+  const queryClient = useQueryClient();
   const [form, setForm] = useState({
     name: "",
     description: "",
@@ -22,6 +24,8 @@ function EditProfile() {
   const { user } = useAuth();
 
   useEffect(() => {
+    if (!user) return;
+
     async function fetchUserProfile() {
       const token = await user.getIdToken();
       const res = await fetch("http://localhost:3000/api/users/me", {
@@ -42,8 +46,8 @@ function EditProfile() {
     fetchUserProfile();
   }, [user]);
 
-  async function handleSubmit() {
-    try {
+  const updateProfileMutation = useMutation({
+    mutationFn: async () => {
       const token = await user.getIdToken();
       const res = await fetch("http://localhost:3000/api/users/me", {
         method: "PATCH",
@@ -61,11 +65,15 @@ function EditProfile() {
         throw new Error("Failed to update profile");
       }
 
-      const data = await res.json();
-      console.log("Profile updated:", data);
-    } catch (error) {
-      console.error("Error updating profile:", error);
-    }
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["userProfile", user?.uid] });
+    },
+  });
+
+  async function handleSubmit() {
+    updateProfileMutation.mutate();
   }
 
   return (
@@ -198,6 +206,7 @@ function EditProfile() {
           >
             <Button
               onClick={handleSubmit}
+              disabled={updateProfileMutation.isLoading}
               sx={{
                 px: 3,
                 py: 1,
@@ -224,7 +233,7 @@ function EditProfile() {
                 },
               }}
             >
-              Modify
+              {updateProfileMutation.isLoading ? "Saving..." : "Save Changes"}
             </Button>
           </Box>
         </Box>
