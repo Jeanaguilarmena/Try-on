@@ -3,6 +3,7 @@ import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 
 const UploadCard = ({ title, onUpload }) => {
   function handleChange(e) {
+    console.log("File input changed");
     const file = e.target.files[0];
     if (!file) return;
 

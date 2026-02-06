@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from "react";
-import HeaderPage from "../header/headerPage";
+import React, { useState } from "react";
+import { Box, Button, Typography } from "@mui/material";
 import Demos from "../../components/demos/demos";
-import { Button, Typography, Box, Card } from "@mui/material";
 import UploadCard from "../../components/uploadImages/uploads";
 import UploadPreview from "../../components/uploadPreview/uploadPreview";
+import UploadUserImage from "../../components/uploadUserImage/uploadUserImage";
 
 function MainPage() {
   const [personImage, setPersonImage] = useState(null);
   const [garmentImage, setGarmentImage] = useState(null);
+
   const personPreviewURL = personImage
     ? URL.createObjectURL(personImage)
     : null;
+
   const garmentPreviewURL = garmentImage
     ? URL.createObjectURL(garmentImage)
     : null;
@@ -18,28 +20,55 @@ function MainPage() {
   function handleGeneratePreview() {
     if (!personImage || !garmentImage) {
       console.log("You need two images");
+      return;
     }
-    console.log("Generating preview with", personImage, "and", garmentImage);
+    console.log("Generating preview with", personImage, garmentImage);
   }
+
   return (
-    <main className="app">
-      <h1>Try-On</h1>
-      <p className="subtitle">
+    <Box
+      component="main"
+      sx={{
+        width: "100%",
+        textAlign: "center",
+      }}
+    >
+      <Typography variant="h4" fontWeight={600} mt={4}>
+        Try-On
+      </Typography>
+
+      <Typography
+        variant="body1"
+        color="text.secondary"
+        mt={1}
+        sx={{ maxWidth: 520, mx: "auto" }}
+      >
         Upload a full-body photo and a garment to preview how it might look on
         you.
-      </p>
-      <div className="upload-section">
-        <h2>Upload your photo</h2>
-      </div>
+      </Typography>
+
+      <Typography
+        sx={{
+          mt: 6,
+          fontSize: "0.95rem",
+          fontWeight: 500,
+          letterSpacing: "-0.01em",
+          color: "text.secondary",
+        }}
+      >
+        Upload your photo
+      </Typography>
+
       <Box
         sx={{
           display: "flex",
-          gap: 3,
           justifyContent: "center",
+          gap: 3,
+          mt: 3,
         }}
       >
         {!personImage ? (
-          <UploadCard
+          <UploadUserImage
             title="Add a photo of yours"
             onUpload={(file) => setPersonImage(file)}
           />
@@ -62,29 +91,40 @@ function MainPage() {
           />
         )}
       </Box>
-      <Typography>-</Typography>
-      <Button
-        variant="contained"
-        sx={{
-          padding: "0.75rem 2rem",
-          borderRadius: "999px",
-          backgroundColor: "#111827",
-          color: "white",
-          fontSize: "1rem",
-          textTransform: "none", // evita que MUI ponga el texto en mayúsculas
-          "&:hover": {
-            backgroundColor: "#1f2937", // un hover ligeramente más claro
-          },
-        }}
-        onClick={handleGeneratePreview}
-      >
-        Generate preview
-      </Button>
-      <Box>
-        <Typography>-</Typography>
+
+      {/* Generate button */}
+      <Box mt={6}>
+        <Button
+          variant="contained"
+          onClick={handleGeneratePreview}
+          sx={{
+            px: "2rem",
+            py: "0.75rem",
+            borderRadius: "999px",
+            backgroundColor: "#111827",
+            fontSize: "1rem",
+            textTransform: "none",
+            "&:hover": {
+              backgroundColor: "#1f2937",
+            },
+          }}
+        >
+          Generate preview
+        </Button>
       </Box>
-      <Demos />
-    </main>
+
+      {/* Demos */}
+      <Box
+        sx={{
+          mt: 6,
+          maxWidth: 800,
+          mx: "auto",
+          px: 2,
+        }}
+      >
+        <Demos />
+      </Box>
+    </Box>
   );
 }
 

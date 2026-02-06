@@ -39,6 +39,7 @@ function Demos() {
               sx={{
                 fontFamily:
                   '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+                color: "text.secondary",
               }}
             >
               Try-on examples in pairs of person and garment images
