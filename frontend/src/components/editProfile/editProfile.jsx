@@ -13,8 +13,10 @@ import PhotoCameraOutlinedIcon from "@mui/icons-material/PhotoCameraOutlined";
 import { useAuth } from "../../context/authContext";
 import image from "../../../assets/generatedImage.png";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 function EditProfile() {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [form, setForm] = useState({
     name: "",
@@ -74,6 +76,11 @@ function EditProfile() {
 
   async function handleSubmit() {
     updateProfileMutation.mutate();
+    navigate("/home/profile");
+  }
+
+  function handleCancel() {
+    navigate("/home/profile");
   }
 
   return (
@@ -202,6 +209,7 @@ function EditProfile() {
               display: "flex",
               alignItems: "flex-start",
               pt: 8,
+              gap: 2,
             }}
           >
             <Button
@@ -234,6 +242,37 @@ function EditProfile() {
               }}
             >
               {updateProfileMutation.isLoading ? "Saving..." : "Save Changes"}
+            </Button>
+            <Button
+              onClick={handleCancel}
+              disabled={updateProfileMutation.isLoading}
+              sx={{
+                px: 3,
+                py: 1,
+                minHeight: 36,
+                borderRadius: 999,
+                textTransform: "none",
+                fontSize: "0.9rem",
+                fontWeight: 500,
+                color: "#fff",
+                background: "linear-gradient(180deg, #1c1c1e 0%, #000 100%)",
+                boxShadow:
+                  "0 4px 12px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.1)",
+                transition: "all 0.2s ease",
+                "&:hover": {
+                  background: "linear-gradient(180deg, #2c2c2e 0%, #111 100%)",
+                  boxShadow:
+                    "0 6px 18px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.15)",
+                  transform: "translateY(-1px)",
+                },
+                "&:active": {
+                  transform: "translateY(0)",
+                  boxShadow:
+                    "0 3px 8px rgba(0,0,0,0.3), inset 0 2px 4px rgba(0,0,0,0.4)",
+                },
+              }}
+            >
+              Cancel
             </Button>
           </Box>
         </Box>

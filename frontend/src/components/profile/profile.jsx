@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Avatar, Box, Button, Card, Typography } from "@mui/material";
 import image from "../../../assets/generatedImage.png";
 import ImagesGrid from "../imagesGrid/imagesGrid";
@@ -6,8 +6,10 @@ import { useAuth } from "../../context/authContext";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { fetchUserProfile } from "../../api/user.api";
+import ProfileImageModal from "../profileImageModal/profileImageModal";
 
 function Profile() {
+  const [selectedImage, setSelectedImage] = useState(null);
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -24,6 +26,10 @@ function Profile() {
     queryFn: () => fetchUserProfile(user),
     enabled: !!user,
   });
+
+  function handleClick(image) {
+    setSelectedImage(image);
+  }
 
   if (isLoading) {
     return <Box sx={{ p: 4 }}>👤 Loading profile...</Box>;
@@ -56,7 +62,6 @@ function Profile() {
           boxShadow: "0 20px 40px rgba(0,0,0,0.08)",
         }}
       >
-        {/* Header */}
         <Box
           sx={{
             display: "flex",
@@ -66,12 +71,14 @@ function Profile() {
           }}
         >
           <Avatar
+            onClick={() => handleClick(image)}
             src={image}
             alt="Profile photo"
             sx={{
               width: 72,
               height: 72,
               borderRadius: 3,
+              cursor: "pointer",
               "&hover": {
                 background: "linear-gradient(180deg, #2c2c2e 0%, #111 100%)",
                 boxShadow:
@@ -104,7 +111,6 @@ function Profile() {
             </Typography>
           </Box>
         </Box>
-        {/* Divider */}
         <Box
           sx={{
             height: 1,
@@ -142,6 +148,12 @@ function Profile() {
         >
           Edit
         </Button>
+        {selectedImage && (
+          <ProfileImageModal
+            image={selectedImage}
+            onClose={() => setSelectedImage(null)}
+          />
+        )}
       </Card>
       <ImagesGrid />
     </Box>

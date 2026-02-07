@@ -1,16 +1,33 @@
-import { Card, Typography, Box } from "@mui/material";
-import React from "react";
+import { Card, Box } from "@mui/material";
+import React, { useState } from "react";
 import image1 from "../../../assets/garment2.png";
-import image2 from "../../../assets/model2.png";
+import image2 from "../../../assets/Demo.jpeg";
 import image3 from "../../../assets/generatedImage.png";
 import Image from "../image/image";
+import DemoModal from "../demoModal/demoModal";
+import ImageDetailModal from "../imageDetailModal/imageDetailModal";
 
 function ImagesGrid() {
+  const [selectedImage, setSelectedImage] = useState(null);
   const images = [
     { image: image1, alt: "image1", id: 1 },
     { image: image2, alt: "image2", id: 2 },
     { image: image3, alt: "image3", id: 3 },
   ];
+
+  // For now, using static info for the image
+  const imageInfo = {
+    Brand: "Adidas",
+    Type: "T-Shirt",
+    Link: "https://www.adidas.com/us/ultraboost-22-shoes/FX6935.html",
+    Price: "$180",
+    Description: "Its a beautiful t-shirt that is perfect for any occasion.",
+    Date: "2026-02-07",
+  };
+
+  function handleSelect(image) {
+    setSelectedImage(image.image);
+  }
 
   return (
     <Box
@@ -36,9 +53,24 @@ function ImagesGrid() {
           }}
         >
           {images.map((image) => (
-            <Image key={image.id} image={image.image} alt={image.alt} />
+            <Image
+              key={image.id}
+              image={image.image}
+              alt={image.alt}
+              onClick={() => handleSelect(image)}
+            />
           ))}
         </Box>
+        {selectedImage && (
+          <ImageDetailModal
+            image={selectedImage}
+            onClose={() => setSelectedImage(null)}
+            brand={imageInfo.Brand}
+            link={imageInfo.Link}
+            date={imageInfo.Date}
+            description={imageInfo.Description}
+          />
+        )}
       </Card>
     </Box>
   );

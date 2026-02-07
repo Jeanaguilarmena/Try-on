@@ -5,9 +5,12 @@ import { Outlet } from "react-router-dom";
 
 function HeaderPage() {
   return (
-    <Box>
+    <Box sx={{ height: "100vh", display: "flex", flexDirection: "column" }}>
       <Header />
-      <Outlet />
+
+      <Box sx={{ flex: 1, overflowY: "auto" }}>
+        <Outlet />
+      </Box>
     </Box>
   );
 }

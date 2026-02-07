@@ -1,5 +1,5 @@
-import { Dialog, Box, Fade } from "@mui/material";
 import React from "react";
+import { Dialog, Box, Fade } from "@mui/material";
 
 function DemoModal({ image, onClose }) {
   return (
@@ -7,34 +7,44 @@ function DemoModal({ image, onClose }) {
       open={Boolean(image)}
       onClose={onClose}
       TransitionComponent={Fade}
-      transitionDuration={250}
+      transitionDuration={300}
+      fullWidth
+      maxWidth="lg"
       PaperProps={{
         sx: {
-          borderRadius: 3,
-          background: "rgba(255,255,255,0.85)",
-          backdropFilter: "blur(24px) saturate(180%)",
-          boxShadow: "0 20px 40px rgba(0,0,0,0.18)",
-          overflow: "hidden",
+          background: "transparent",
+          boxShadow: "none",
+          overflow: "visible",
         },
       }}
       BackdropProps={{
         sx: {
-          backgroundColor: "rgba(0,0,0,0.4)",
-          backdropFilter: "blur(6px)",
+          backgroundColor: "rgba(0,0,0,0.55)",
+          backdropFilter: "blur(10px)",
         },
       }}
     >
-      {/* Marco fino */}
-      <Box sx={{ p: 1 }}>
+      <Box
+        onClick={onClose}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          p: { xs: 2, md: 4 },
+          height: "100%",
+        }}
+      >
         <Box
           component="img"
           src={image}
+          onClick={(e) => e.stopPropagation()}
           sx={{
-            width: "100%",
-            maxWidth: 540,
-            display: "block",
-            borderRadius: 2,
-            boxShadow: "0 1px 2px rgba(0,0,0,0.08)",
+            maxHeight: "85vh",
+            maxWidth: "90vw",
+            borderRadius: "20px",
+            backgroundColor: "rgba(255,255,255,0.85)",
+            backdropFilter: "blur(24px) saturate(180%)",
+            boxShadow: "0 30px 80px rgba(0,0,0,0.35)",
           }}
         />
       </Box>
