@@ -4,10 +4,16 @@ import Demos from "../../components/demos/demos";
 import UploadCard from "../../components/uploadImages/uploads";
 import UploadPreview from "../../components/uploadPreview/uploadPreview";
 import UploadUserImage from "../../components/uploadUserImage/uploadUserImage";
+import { useAuth } from "../../context/authContext";
+import ImagePreviewModal from "../../components/imagePreviewModal/imagePreviewModal";
 
 function MainPage() {
   const [personImage, setPersonImage] = useState(null);
   const [garmentImage, setGarmentImage] = useState(null);
+  const [generatedImage, setGeneratedImage] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [shownModal, setShownModal] = useState(false);
+  const { user } = useAuth();
 
   const personPreviewURL = personImage
     ? URL.createObjectURL(personImage)
@@ -17,12 +23,47 @@ function MainPage() {
     ? URL.createObjectURL(garmentImage)
     : null;
 
-  function handleGeneratePreview() {
-    if (!personImage || !garmentImage) {
-      console.log("You need two images");
-      return;
+  async function handleGeneratePreview() {
+    if (!personImage || !garmentImage) return;
+
+    setLoading(true);
+
+    const token = await user.getIdToken();
+    const formData = new FormData();
+    formData.append("personImage", personImage);
+    formData.append("garmentImage", garmentImage);
+
+    const res = await fetch("http://localhost:3000/api/tryon/generate", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    if (!res.ok) {
+      setLoading(false);
+      throw new Error("Failed to generate try-on preview");
     }
-    console.log("Generating preview with", personImage, garmentImage);
+    const data = await res.json();
+    setGeneratedImage(data.image);
+    setLoading(false);
+  }
+
+  function handleGeneratedImageClick() {
+    setShownModal(true);
+  }
+
+  function handleDeleteImages() {
+    setPersonImage(null);
+    setGarmentImage(null);
+    setGeneratedImage(null);
+  }
+
+  function handleSaveGeneratedImage() {
+    // Here I should implement the logic to save the generated image to the user's profile
+    // For now, I will just log a message
+    console.log("Saving generated image to profile...");
   }
 
   return (
@@ -92,10 +133,10 @@ function MainPage() {
         )}
       </Box>
 
-      {/* Generate button */}
       <Box mt={6}>
         <Button
           variant="contained"
+          disabled={!personImage || !garmentImage}
           onClick={handleGeneratePreview}
           sx={{
             px: "2rem",
@@ -107,13 +148,86 @@ function MainPage() {
             "&:hover": {
               backgroundColor: "#1f2937",
             },
+            "&.Mui-disabled": {
+              backgroundColor: "#111827",
+              color: "#fff",
+              opacity: 0.28,
+              filter: "saturate(0.8)",
+            },
           }}
         >
           Generate preview
         </Button>
+        {loading && (
+          <Box
+            mt={8}
+            sx={{
+              width: 440,
+              height: 580,
+              mx: "auto",
+              borderRadius: "28px",
+              background:
+                "linear-gradient(110deg, #f3f4f6 8%, #e5e7eb 18%, #f3f4f6 33%)",
+              backgroundSize: "200% 100%",
+              animation: "shimmer 1.4s ease infinite",
+            }}
+          />
+        )}
+
+        {generatedImage && !loading && (
+          <>
+            <Typography
+              sx={{
+                mt: 6,
+                mb: -4,
+                textAlign: "center",
+                fontSize: "0.9rem",
+                color: "text.secondary",
+              }}
+            >
+              Preview generated
+            </Typography>
+
+            <Box
+              onClick={handleGeneratedImageClick}
+              mt={6}
+              sx={{
+                maxWidth: 440,
+                cursor: "pointer",
+                mx: "auto",
+                borderRadius: "28px",
+                overflow: "hidden",
+                backgroundColor: "#fff",
+                position: "relative",
+                boxShadow: `
+          0 40px 80px rgba(0,0,0,0.18),
+          0 10px 20px rgba(0,0,0,0.08)
+        `,
+                animation: "resultAppear 0.6s cubic-bezier(.2,.8,.2,1)",
+
+                "&::after": {
+                  content: '""',
+                  position: "absolute",
+                  inset: 0,
+                  borderRadius: "28px",
+                  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.6)",
+                  pointerEvents: "none",
+                },
+              }}
+            >
+              <img
+                src={generatedImage}
+                alt="Generated try-on"
+                style={{
+                  width: "100%",
+                  display: "block",
+                }}
+              />
+            </Box>
+          </>
+        )}
       </Box>
 
-      {/* Demos */}
       <Box
         sx={{
           mt: 6,
@@ -124,6 +238,14 @@ function MainPage() {
       >
         <Demos />
       </Box>
+      {shownModal && (
+        <ImagePreviewModal
+          image={generatedImage}
+          onClose={() => setShownModal(false)}
+          onDelete={handleDeleteImages}
+          onSave={handleSaveGeneratedImage}
+        />
+      )}
     </Box>
   );
 }
