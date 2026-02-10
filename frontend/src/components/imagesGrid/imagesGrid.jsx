@@ -3,31 +3,28 @@ import React, { useState } from "react";
 import image1 from "../../../assets/garment2.png";
 import image2 from "../../../assets/Demo.jpeg";
 import image3 from "../../../assets/generatedImage.png";
-import Image from "../image/image";
-import DemoModal from "../demoModal/demoModal";
 import ImageDetailModal from "../imageDetailModal/imageDetailModal";
+import MediaTabs from "../mediaTabs/mediaTabs";
+import MediaGrid from "../mediaGrid/mediaGrid";
 
 function ImagesGrid() {
   const [selectedImage, setSelectedImage] = useState(null);
+  const [activeTab, setActiveTab] = useState("generated");
   const images = [
-    { image: image1, alt: "image1", id: 1 },
-    { image: image2, alt: "image2", id: 2 },
-    { image: image3, alt: "image3", id: 3 },
+    { image: image1, alt: "image1", id: 1, type: "saved" },
+    { image: image2, alt: "image2", id: 2, type: "saved" },
+    { image: image3, alt: "image3", id: 3, type: "generated" },
   ];
 
   // For now, using static info for the image
   const imageInfo = {
     Brand: "Adidas",
     Type: "T-Shirt",
-    Link: "https://www.adidas.com/us/ultraboost-22-shoes/FX6935.html",
+    Link: "https://www.adidas.com/us/3-stripes-tee/KE3537.html",
     Price: "$180",
     Description: "Its a beautiful t-shirt that is perfect for any occasion.",
     Date: "2026-02-07",
   };
-
-  function handleSelect(image) {
-    setSelectedImage(image.image);
-  }
 
   return (
     <Box
@@ -44,24 +41,16 @@ function ImagesGrid() {
           boxShadow: "0 20px 40px rgba(0,0,0,0.08)",
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: 2,
-            mb: 3,
-          }}
-        >
-          {images.map((image) => (
-            <Image
-              key={image.id}
-              image={image.image}
-              alt={image.alt}
-              onClick={() => handleSelect(image)}
-            />
-          ))}
-        </Box>
+        <MediaTabs active={activeTab} onChange={setActiveTab} />
+        <MediaGrid
+          posts={images}
+          onSelectPost={setSelectedImage}
+          type={activeTab}
+        />
         {selectedImage && (
+          //This image DetailModal should be different for generated images and saved images
+          //Generated images have details
+          //Saved images only have the image
           <ImageDetailModal
             image={selectedImage}
             onClose={() => setSelectedImage(null)}

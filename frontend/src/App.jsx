@@ -8,6 +8,7 @@ import AuthApp from "./AuthApp";
 import { AuthProvider } from "./context/authContext";
 import ProfilePage from "./pages/profilePage/profilePage";
 import EditProfilePage from "./pages/editProfilePage/editProfilePage";
+import SaveGeneratedImagePage from "./pages/saveGeneratedImagePage/saveGeneratedImagePage";
 
 function App() {
   const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ function App() {
                 <Route path="login" element={<LoginPage />} />
                 <Route path="profile" element={<ProfilePage />} />
                 <Route path="profile/edit" element={<EditProfilePage />} />
+                <Route path="save" element={<SaveGeneratedImagePage />} />
               </Route>
             </Route>
 

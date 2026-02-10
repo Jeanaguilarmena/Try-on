@@ -6,6 +6,7 @@ import UploadPreview from "../../components/uploadPreview/uploadPreview";
 import UploadUserImage from "../../components/uploadUserImage/uploadUserImage";
 import { useAuth } from "../../context/authContext";
 import ImagePreviewModal from "../../components/imagePreviewModal/imagePreviewModal";
+import { useNavigate } from "react-router-dom";
 
 function MainPage() {
   const [personImage, setPersonImage] = useState(null);
@@ -14,6 +15,7 @@ function MainPage() {
   const [loading, setLoading] = useState(false);
   const [shownModal, setShownModal] = useState(false);
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   const personPreviewURL = personImage
     ? URL.createObjectURL(personImage)
@@ -58,12 +60,14 @@ function MainPage() {
     setPersonImage(null);
     setGarmentImage(null);
     setGeneratedImage(null);
+    setShownModal(false);
   }
 
   function handleSaveGeneratedImage() {
     // Here I should implement the logic to save the generated image to the user's profile
     // For now, I will just log a message
     console.log("Saving generated image to profile...");
+    navigate("save", { state: { image: generatedImage } });
   }
 
   return (
