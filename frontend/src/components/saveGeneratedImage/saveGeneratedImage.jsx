@@ -44,7 +44,6 @@ function SaveGeneratedImage() {
           boxShadow: "0 30px 60px rgba(0,0,0,0.12)",
         }}
       >
-        p
         <Box
           sx={{
             flex: 1,

@@ -6,6 +6,7 @@ import image3 from "../../../assets/generatedImage.png";
 import ImageDetailModal from "../imageDetailModal/imageDetailModal";
 import MediaTabs from "../mediaTabs/mediaTabs";
 import MediaGrid from "../mediaGrid/mediaGrid";
+import UserPhotoModal from "../userPhotoModal/userPhotoModal";
 
 function ImagesGrid() {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -47,10 +48,7 @@ function ImagesGrid() {
           onSelectPost={setSelectedImage}
           type={activeTab}
         />
-        {selectedImage && (
-          //This image DetailModal should be different for generated images and saved images
-          //Generated images have details
-          //Saved images only have the image
+        {selectedImage && activeTab === "generated" && (
           <ImageDetailModal
             image={selectedImage}
             onClose={() => setSelectedImage(null)}
@@ -58,6 +56,12 @@ function ImagesGrid() {
             link={imageInfo.Link}
             date={imageInfo.Date}
             description={imageInfo.Description}
+          />
+        )}
+        {selectedImage && activeTab === "saved" && (
+          <UserPhotoModal
+            image={selectedImage}
+            onClose={() => setSelectedImage(null)}
           />
         )}
       </Card>
