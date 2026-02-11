@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import Demos from "../../components/demos/demos";
-import UploadCard from "../../components/uploadImages/uploads";
+import UploadCard from "../../components/uploads/uploads";
 import UploadPreview from "../../components/uploadPreview/uploadPreview";
 import UploadUserImage from "../../components/uploadUserImage/uploadUserImage";
 import { useAuth } from "../../context/authContext";
