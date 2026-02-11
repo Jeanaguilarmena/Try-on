@@ -38,7 +38,6 @@ router.post("/save", firebaseAuthMiddleware, upload.single("image"), async (req,
         const image = file.buffer;
 
         // Here I will call the service that will save the image to firebase storage
-        console.log("Saving image...");
         res.status(200).json({ message: "Image saved successfully" });
     } catch (error) {
         res.status(500).json({ message: "Internal server error" });

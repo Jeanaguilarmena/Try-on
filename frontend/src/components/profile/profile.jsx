@@ -41,8 +41,7 @@ function Profile() {
   }
 
   async function handleUpload(image) {
-    setUploadedImage(URL.createObjectURL(image));
-
+    setUploadedImage(image);
     const token = await user.getIdToken();
 
     const formData = new FormData();

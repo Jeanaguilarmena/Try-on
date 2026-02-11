@@ -1,12 +1,30 @@
 import { Box, Card, Typography, IconButton, Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import { useState } from "react";
 
 function UploadImage({ onUpload, generatedImage }) {
+  const [url, setUrl] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+
   function handleChange(e) {
     const file = e.target.files?.[0];
     if (!file) return;
-    onUpload?.(file);
+    setSelectedFile(file);
+    setUrl(URL.createObjectURL(file));
     e.target.value = "";
+  }
+
+  function handleUpload(e) {
+    if (!selectedFile) return;
+    onUpload?.(selectedFile);
+    e.target.value = "";
+    setSelectedFile(null);
+    setUrl(null);
+  }
+
+  function handleCancel(e) {
+    setSelectedFile(null);
+    setUrl(null);
   }
 
   const primaryButtonSX = {
@@ -55,11 +73,12 @@ function UploadImage({ onUpload, generatedImage }) {
   };
   return (
     <Card
-      component="label"
+      //   component="label"
+      component={!selectedFile ? "label" : "div"}
       sx={{
         width: 420,
         borderRadius: 4,
-        p: generatedImage ? 0 : 3,
+        p: 3,
         cursor: "pointer",
         overflow: "hidden",
         background:
@@ -81,7 +100,7 @@ function UploadImage({ onUpload, generatedImage }) {
     >
       <input hidden type="file" accept="image/*" onChange={handleChange} />
 
-      {!generatedImage ? (
+      {!selectedFile ? (
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           <Box
             sx={{
@@ -120,7 +139,7 @@ function UploadImage({ onUpload, generatedImage }) {
           >
             <Box
               component="img"
-              src={generatedImage}
+              src={url}
               alt="Preview"
               sx={{
                 width: "100%",
@@ -146,8 +165,12 @@ function UploadImage({ onUpload, generatedImage }) {
               backdropFilter: "blur(12px)",
             }}
           >
-            <Button sx={secondaryButtonSX}>Cancel</Button>
-            <Button sx={primaryButtonSX}>Save</Button>
+            <Button onClick={handleCancel} sx={secondaryButtonSX}>
+              Cancel
+            </Button>
+            <Button onClick={handleUpload} sx={primaryButtonSX}>
+              Save
+            </Button>
           </Box>
         </Box>
       )}
