@@ -40,13 +40,29 @@ function Profile() {
     setSelectedImage(image);
   }
 
-  useEffect(() => {
-    function saveUploadedImage() {
-      console.log("Saving uploaded image:", uploadedImage);
+  async function handleUpload(image) {
+    setUploadedImage(URL.createObjectURL(image));
+
+    const token = await user.getIdToken();
+
+    const formData = new FormData();
+    formData.append("image", image);
+
+    const res = await fetch("http://localhost:3000/api/tryon/save", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to upload image");
     }
 
-    saveUploadedImage();
-  }, [uploadedImage]);
+    const data = await res.json();
+    console.log("Image uploaded successfully:", data);
+  }
 
   if (isLoading) {
     return <Box sx={{ p: 4 }}>👤 Loading profile...</Box>;
@@ -65,8 +81,8 @@ function Profile() {
       sx={{
         display: "flex",
         alignItems: "flex-start",
-        gap: 4,
-        px: 3,
+        // gap: 4,
+        // px: 3,
         gap: 5,
         px: { xs: 2, md: 6 },
       }}
@@ -200,7 +216,7 @@ function Profile() {
             />
           )}
         </Card>
-        <UploadImage onUpload={(image) => setUploadedImage(image)} />
+        <UploadImage onUpload={handleUpload} generatedImage={uploadedImage} />
       </Box>
       <ImagesGrid />
     </Box>

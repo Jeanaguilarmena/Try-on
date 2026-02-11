@@ -28,4 +28,21 @@ router.post("/generate", firebaseAuthMiddleware, upload.fields([
     }
 })
 
+//This endpoint will handle the saving of an image in storage
+router.post("/save", firebaseAuthMiddleware, upload.single("image"), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ message: "Image is required" });
+        }
+        const file = req.file;
+        const image = file.buffer;
+
+        // Here I will call the service that will save the image to firebase storage
+        console.log("Saving image...");
+        res.status(200).json({ message: "Image saved successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Internal server error" });
+    }
+})
+
 export default router;
