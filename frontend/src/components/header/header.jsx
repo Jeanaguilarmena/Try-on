@@ -1,12 +1,24 @@
-import { useRef } from "react";
-import { AppBar, Toolbar, Container, Box, Button, Stack } from "@mui/material";
+import { useContext, useRef } from "react";
+import {
+  AppBar,
+  Toolbar,
+  Container,
+  Box,
+  Button,
+  Stack,
+  IconButton,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/authContext";
+import { ColorModeContext } from "../../context/themeContext";
+import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
+import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 
 export default function Header() {
   const navigate = useNavigate();
   const inputRef = useRef(null);
   const { logout } = useAuth();
+  const { toggleColorMode, mode } = useContext(ColorModeContext);
 
   const menu = [
     { label: "Home", function: () => navigate("/home") },
@@ -83,6 +95,45 @@ export default function Header() {
                   {item.label}
                 </Button>
               ))}
+              <IconButton
+                onClick={toggleColorMode}
+                disableRipple
+                sx={(theme) => ({
+                  width: 20,
+                  height: 20,
+                  borderRadius: "50%",
+                  backdropFilter: "blur(20px)",
+                  backgroundColor:
+                    theme.palette.mode === "light"
+                      ? "rgba(0,0,0,0.04)"
+                      : "rgba(255,255,255,0.08)",
+                  border: "1px solid",
+                  borderColor:
+                    theme.palette.mode === "light"
+                      ? "rgba(0,0,0,0.06)"
+                      : "rgba(255,255,255,0.12)",
+                  transition: "all 0.25s cubic-bezier(.2,.8,.2,1)",
+                  color: "text.primary",
+
+                  "&:hover": {
+                    backgroundColor:
+                      theme.palette.mode === "light"
+                        ? "rgba(0,0,0,0.08)"
+                        : "rgba(255,255,255,0.15)",
+                    transform: "translateY(-1px)",
+                  },
+
+                  "&:active": {
+                    transform: "translateY(0)",
+                  },
+                })}
+              >
+                {mode === "dark" ? (
+                  <LightModeOutlinedIcon fontSize="small" />
+                ) : (
+                  <DarkModeOutlinedIcon fontSize="small" />
+                )}
+              </IconButton>
             </Stack>
           </Toolbar>
         </Container>

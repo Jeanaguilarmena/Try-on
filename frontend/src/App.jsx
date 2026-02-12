@@ -9,34 +9,37 @@ import { AuthProvider } from "./context/authContext";
 import ProfilePage from "./pages/profilePage/profilePage";
 import EditProfilePage from "./pages/editProfilePage/editProfilePage";
 import SaveGeneratedImagePage from "./pages/saveGeneratedImagePage/saveGeneratedImagePage";
+import { ThemeProviderWrapper } from "./context/themeContext";
 
 function App() {
   const queryClient = new QueryClient();
   return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <AuthProvider>
-          <Routes>
-            <Route path="login" element={<LoginPage />} />
+    <ThemeProviderWrapper>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <AuthProvider>
+            <Routes>
+              <Route path="login" element={<LoginPage />} />
 
-            <Route path="/" element={<AuthApp />}>
-              <Route path="/home" element={<HeaderPage />}>
-                <Route index element={<MainPage />} />
-                <Route path="login" element={<LoginPage />} />
-                <Route path="profile" element={<ProfilePage />} />
-                <Route path="profile/edit" element={<EditProfilePage />} />
-                <Route path="save" element={<SaveGeneratedImagePage />} />
+              <Route path="/" element={<AuthApp />}>
+                <Route path="/home" element={<HeaderPage />}>
+                  <Route index element={<MainPage />} />
+                  <Route path="login" element={<LoginPage />} />
+                  <Route path="profile" element={<ProfilePage />} />
+                  <Route path="profile/edit" element={<EditProfilePage />} />
+                  <Route path="save" element={<SaveGeneratedImagePage />} />
+                </Route>
               </Route>
-            </Route>
 
-            {/* <Route path="/" element={<HeaderPage />}>
+              {/* <Route path="/" element={<HeaderPage />}>
             <Route index element={<MainPage />} />
             <Route path="login" element={<LoginPage />} />
           </Route> */}
-          </Routes>
-        </AuthProvider>
-      </BrowserRouter>
-    </QueryClientProvider>
+            </Routes>
+          </AuthProvider>
+        </BrowserRouter>
+      </QueryClientProvider>
+    </ThemeProviderWrapper>
   );
 }
 
