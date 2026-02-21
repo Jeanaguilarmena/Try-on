@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Typography,
-} from "@mui/material";
+import { Avatar, Box, Button, Card, Typography } from "@mui/material";
 import image from "../../../assets/generatedImage.png";
 import ImagesGrid from "../imagesGrid/imagesGrid";
 import { useAuth } from "../../context/authContext";
@@ -47,7 +40,7 @@ function Profile() {
     const formData = new FormData();
     formData.append("image", image);
 
-    const res = await fetch("http://localhost:3000/api/tryon/save", {
+    const res = await fetch("http://localhost:3000/api/tryon/savedImages", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,

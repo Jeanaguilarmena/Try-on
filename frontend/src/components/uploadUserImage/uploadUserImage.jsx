@@ -3,7 +3,7 @@ import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import PhotoLibraryOutlinedIcon from "@mui/icons-material/PhotoLibraryOutlined";
 import { useState } from "react";
 
-const UploadUserImage = ({ title, onUpload }) => {
+const UploadUserImage = ({ title, onUpload, onOpenModal }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const open = Boolean(anchorEl);
@@ -25,6 +25,7 @@ const UploadUserImage = ({ title, onUpload }) => {
   };
 
   const handleSelectPhoto = () => {
+    onOpenModal(true);
     handleClose();
     console.log("Use saved image");
   };

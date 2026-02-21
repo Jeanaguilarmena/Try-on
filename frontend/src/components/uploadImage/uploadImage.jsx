@@ -73,7 +73,6 @@ function UploadImage({ onUpload, generatedImage }) {
   };
   return (
     <Card
-      //   component="label"
       component={!selectedFile ? "label" : "div"}
       sx={{
         width: 420,

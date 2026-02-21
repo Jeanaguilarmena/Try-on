@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import Image from "../image/image";
-function MediaGrid({ posts, onSelectPost, type }) {
+function MediaGrid({ posts, onSelectPost }) {
   return (
     <Box
       sx={{
@@ -10,16 +10,14 @@ function MediaGrid({ posts, onSelectPost, type }) {
         mb: 3,
       }}
     >
-      {posts
-        .filter((item) => item.type === type)
-        .map((image) => (
-          <Image
-            key={image.id}
-            image={image.image}
-            alt={image.alt}
-            onClick={() => onSelectPost(image.image)}
-          />
-        ))}
+      {posts.map((image) => (
+        <Image
+          key={image.id}
+          image={image.imageUrl}
+          alt="image"
+          onClick={() => onSelectPost(image)}
+        />
+      ))}
     </Box>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import Demos from "../../components/demos/demos";
 import UploadCard from "../../components/uploads/uploads";
@@ -7,6 +7,7 @@ import UploadUserImage from "../../components/uploadUserImage/uploadUserImage";
 import { useAuth } from "../../context/authContext";
 import ImagePreviewModal from "../../components/imagePreviewModal/imagePreviewModal";
 import { useNavigate } from "react-router-dom";
+import LoadSavedImageModal from "../../components/loadSavedImageModal/loadSavedImageModal";
 
 function MainPage() {
   const [personImage, setPersonImage] = useState(null);
@@ -14,6 +15,8 @@ function MainPage() {
   const [generatedImage, setGeneratedImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [shownModal, setShownModal] = useState(false);
+  const [showSavedImageModal, setShowSavedImageModal] = useState(false);
+  const [savedImages, setSavedImages] = useState([]);
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -70,6 +73,30 @@ function MainPage() {
     navigate("save", { state: { image: generatedImage } });
   }
 
+  //This is gonna be my fetching of the user's saved images, so that they can select one when uploading their photo
+  useEffect(() => {
+    async function fetchSavedImages() {
+      if (!user) return;
+
+      const token = await user.getIdToken();
+
+      const res = await fetch("http://localhost:3000/api/tryon/savedImages", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch saved images");
+      }
+
+      const data = await res.json();
+      setSavedImages(data);
+    }
+
+    fetchSavedImages();
+  }, [user]);
+
   return (
     <Box
       component="main"
@@ -116,6 +143,7 @@ function MainPage() {
           <UploadUserImage
             title="Add a photo of yours"
             onUpload={(file) => setPersonImage(file)}
+            onOpenModal={setShowSavedImageModal}
           />
         ) : (
           <UploadPreview
@@ -248,6 +276,14 @@ function MainPage() {
           onClose={() => setShownModal(false)}
           onDelete={handleDeleteImages}
           onSave={handleSaveGeneratedImage}
+        />
+      )}
+      {showSavedImageModal && (
+        <LoadSavedImageModal
+          open={showSavedImageModal}
+          images={savedImages}
+          onClose={() => setShowSavedImageModal(false)}
+          onSelect={setPersonImage}
         />
       )}
     </Box>

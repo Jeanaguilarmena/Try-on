@@ -1,21 +1,50 @@
 import { Card, Box } from "@mui/material";
-import React, { useState } from "react";
-import image1 from "../../../assets/garment2.png";
-import image2 from "../../../assets/Demo.jpeg";
-import image3 from "../../../assets/generatedImage.png";
+import React, { useState, useEffect } from "react";
 import ImageDetailModal from "../imageDetailModal/imageDetailModal";
 import MediaTabs from "../mediaTabs/mediaTabs";
 import MediaGrid from "../mediaGrid/mediaGrid";
 import UserPhotoModal from "../userPhotoModal/userPhotoModal";
+import { useAuth } from "../../context/authContext";
 
 function ImagesGrid() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [activeTab, setActiveTab] = useState("generated");
-  const images = [
-    { image: image1, alt: "image1", id: 1, type: "saved" },
-    { image: image2, alt: "image2", id: 2, type: "saved" },
-    { image: image3, alt: "image3", id: 3, type: "generated" },
-  ];
+  const [savedImages, setsavedImages] = useState([]);
+  const [generatedImages, setGeneratedImages] = useState([]);
+  const { user } = useAuth();
+
+  const images = activeTab === "generated" ? generatedImages : savedImages;
+
+  useEffect(() => {
+    async function fetchUserImages() {
+      try {
+        const token = await user.getIdToken();
+
+        const [resGenerated, resSaved] = await Promise.all([
+          fetch("http://localhost:3000/api/tryon/generatedImages", {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          fetch("http://localhost:3000/api/tryon/savedImages", {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+        ]);
+
+        if (!resGenerated.ok || !resSaved.ok) {
+          throw new Error("Failed to fetch images");
+        }
+
+        const generated = await resGenerated.json();
+        const saved = await resSaved.json();
+
+        setGeneratedImages(generated);
+        setsavedImages(saved);
+      } catch (error) {
+        console.error("Error fetching images:", error);
+      }
+    }
+
+    fetchUserImages();
+  }, []);
 
   // For now, using static info for the image
   const imageInfo = {
@@ -62,24 +91,20 @@ function ImagesGrid() {
         }}
       >
         <MediaTabs active={activeTab} onChange={setActiveTab} />
-        <MediaGrid
-          posts={images}
-          onSelectPost={setSelectedImage}
-          type={activeTab}
-        />
+        <MediaGrid posts={images} onSelectPost={setSelectedImage} />
         {selectedImage && activeTab === "generated" && (
           <ImageDetailModal
-            image={selectedImage}
+            image={selectedImage.imageUrl}
             onClose={() => setSelectedImage(null)}
-            brand={imageInfo.Brand}
-            link={imageInfo.Link}
+            brand={selectedImage.brand}
+            link={selectedImage.link}
             date={imageInfo.Date}
-            description={imageInfo.Description}
+            description={selectedImage.description}
           />
         )}
         {selectedImage && activeTab === "saved" && (
           <UserPhotoModal
-            image={selectedImage}
+            image={selectedImage.imageUrl}
             onClose={() => setSelectedImage(null)}
           />
         )}

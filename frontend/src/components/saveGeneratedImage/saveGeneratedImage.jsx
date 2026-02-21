@@ -2,21 +2,41 @@ import { Box, Button, Card, Typography, Divider } from "@mui/material";
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import CustomInput from "../customInput/customInput";
+import { useAuth } from "../../context/authContext";
 
 function SaveGeneratedImage() {
   const location = useLocation();
   const navigate = useNavigate();
   const { image } = location.state || {};
+  const { user } = useAuth();
 
   const [brand, setBrand] = useState("");
   const [description, setDescription] = useState("");
   const [link, setLink] = useState("");
 
-  function handleSave() {
-    //Here I need to make a POST req to the backend to save the generated image along with the details,
-    //but since I havent implemented the backend route for saving try-ons yet, I'll just navigate back to the profile page for now
-    //And need to config my storage project to save images
-    console.log("Saving try-on with details:", { brand, description, link });
+  async function handleSave() {
+    const token = await user.getIdToken();
+
+    const res = await fetch("http://localhost:3000/api/tryon/save", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        imageUrl: image,
+        brand,
+        description,
+        link,
+      }),
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to save try-on image");
+    }
+
+    const data = await res.json();
+    console.log("Saved try-on image:", data);
     navigate("..");
   }
 
