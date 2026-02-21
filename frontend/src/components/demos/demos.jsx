@@ -20,7 +20,6 @@ function Demos() {
         position: "sticky",
         top: 0,
         zIndex: 1100,
-        backgroundColor: "#fff",
         borderBottom: "1px solid #e5e5e5",
         borderRadius: 4,
       }}

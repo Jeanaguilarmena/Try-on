@@ -64,31 +64,43 @@ function ImagesGrid() {
       }}
     >
       <Card
-        sx={{
+        sx={(theme) => ({
           mt: 4,
           borderRadius: 4,
           p: 3,
+
           background:
-            "linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(245,245,247,0.9) 100%)",
+            theme.palette.mode === "dark"
+              ? "linear-gradient(180deg, rgba(28,28,30,0.85) 0%, rgba(18,18,18,0.85) 100%)"
+              : "linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(245,245,247,0.9) 100%)",
+
           backdropFilter: "blur(20px) saturate(180%)",
-          boxShadow: `
+
+          boxShadow:
+            theme.palette.mode === "dark"
+              ? `
+          0 20px 40px rgba(0,0,0,0.6),
+          inset 0 1px 0 rgba(255,255,255,0.05)
+        `
+              : `
           0 20px 40px rgba(0,0,0,0.08),
           inset 0 1px 0 rgba(255,255,255,0.6)
         `,
+
           transition: "all 0.35s cubic-bezier(.2,.8,.2,1)",
 
           "&:hover": {
             transform: "translateY(-2px)",
-            boxShadow: `
-            0 30px 70px rgba(0,0,0,0.14),
-            inset 0 1px 0 rgba(255,255,255,0.7)
-          `,
+            boxShadow:
+              theme.palette.mode === "dark"
+                ? "0 30px 70px rgba(0,0,0,0.8)"
+                : "0 30px 70px rgba(0,0,0,0.14)",
           },
 
           "&:active": {
             transform: "translateY(0)",
           },
-        }}
+        })}
       >
         <MediaTabs active={activeTab} onChange={setActiveTab} />
         <MediaGrid posts={images} onSelectPost={setSelectedImage} />

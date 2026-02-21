@@ -88,23 +88,41 @@ function Profile() {
         }}
       >
         <Card
-          sx={{
+          sx={(theme) => ({
             mt: 4,
             width: 420,
             borderRadius: 4,
             p: 3,
+
             background:
-              "linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(245,245,247,0.9) 100%)",
+              theme.palette.mode === "dark"
+                ? "linear-gradient(180deg, rgba(28,28,30,0.85) 0%, rgba(18,18,18,0.85) 100%)"
+                : "linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(245,245,247,0.9) 100%)",
+
             backdropFilter: "blur(20px) saturate(180%)",
-            boxShadow: `
+
+            boxShadow:
+              theme.palette.mode === "dark"
+                ? `
+          0 20px 40px rgba(0,0,0,0.6),
+          inset 0 1px 0 rgba(255,255,255,0.05)
+        `
+                : `
           0 20px 40px rgba(0,0,0,0.08),
           inset 0 1px 0 rgba(255,255,255,0.6)
         `,
+
             transition: "all 0.35s cubic-bezier(.2,.8,.2,1)",
 
             "&:hover": {
               transform: "translateY(-2px)",
-              boxShadow: `
+              boxShadow:
+                theme.palette.mode === "dark"
+                  ? `
+            0 30px 70px rgba(0,0,0,0.8),
+            inset 0 1px 0 rgba(255,255,255,0.08)
+          `
+                  : `
             0 30px 70px rgba(0,0,0,0.14),
             inset 0 1px 0 rgba(255,255,255,0.7)
           `,
@@ -113,7 +131,7 @@ function Profile() {
             "&:active": {
               transform: "translateY(0)",
             },
-          }}
+          })}
         >
           <Box
             sx={{
@@ -146,7 +164,7 @@ function Profile() {
                 sx={{
                   fontSize: "1.25rem",
                   fontWeight: 600,
-                  color: "#111",
+                  color: "text.primary",
                   lineHeight: 1.2,
                 }}
               >
@@ -156,7 +174,7 @@ function Profile() {
               <Typography
                 sx={{
                   fontSize: "0.9rem",
-                  color: "#6e6e73",
+                  color: "text.secondary",
                   mt: 0.5,
                 }}
               >
@@ -167,13 +185,13 @@ function Profile() {
           <Box
             sx={{
               height: 1,
-              backgroundColor: "#e5e5ea",
+              bgcolor: "divider",
               mb: 2,
             }}
           />
           <Button
             onClick={handleEditProfile}
-            sx={{
+            sx={(theme) => ({
               px: 3,
               py: 1,
               minHeight: 36,
@@ -182,22 +200,31 @@ function Profile() {
               fontSize: "0.9rem",
               fontWeight: 500,
               color: "#fff",
-              background: "linear-gradient(180deg, #1c1c1e 0%, #000 100%)",
+
+              background:
+                theme.palette.mode === "dark"
+                  ? "linear-gradient(180deg, #2c2c2e 0%, #111 100%)"
+                  : "linear-gradient(180deg, #1c1c1e 0%, #000 100%)",
+
               boxShadow:
-                "0 4px 12px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.1)",
+                theme.palette.mode === "dark"
+                  ? "0 6px 18px rgba(0,0,0,0.7)"
+                  : "0 4px 12px rgba(0,0,0,0.25)",
+
               transition: "all 0.2s ease",
+
               "&:hover": {
-                background: "linear-gradient(180deg, #2c2c2e 0%, #111 100%)",
-                boxShadow:
-                  "0 6px 18px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.15)",
                 transform: "translateY(-1px)",
+                boxShadow:
+                  theme.palette.mode === "dark"
+                    ? "0 8px 24px rgba(0,0,0,0.9)"
+                    : "0 6px 18px rgba(0,0,0,0.35)",
               },
+
               "&:active": {
                 transform: "translateY(0)",
-                boxShadow:
-                  "0 3px 8px rgba(0,0,0,0.3), inset 0 2px 4px rgba(0,0,0,0.4)",
               },
-            }}
+            })}
           >
             Edit
           </Button>

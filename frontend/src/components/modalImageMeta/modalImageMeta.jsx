@@ -12,17 +12,23 @@ function ImageMeta({ brand, date, description, link }) {
         gap: 3,
       }}
     >
-      {/* Brand + date */}
       <Box
-        sx={{
+        sx={(theme) => ({
           p: 2.5,
           borderRadius: 3,
+
           background:
-            "linear-gradient(180deg, rgba(255,255,255,0.9), rgba(245,245,247,0.9))",
+            theme.palette.mode === "dark"
+              ? "linear-gradient(180deg, rgba(28,28,30,0.85), rgba(18,18,18,0.85))"
+              : "linear-gradient(180deg, rgba(255,255,255,0.9), rgba(245,245,247,0.9))",
+
           backdropFilter: "blur(20px) saturate(180%)",
+
           boxShadow:
-            "inset 0 1px 0 rgba(255,255,255,0.6), 0 8px 24px rgba(0,0,0,0.06)",
-        }}
+            theme.palette.mode === "dark"
+              ? "inset 0 1px 0 rgba(255,255,255,0.05), 0 8px 24px rgba(0,0,0,0.6)"
+              : "inset 0 1px 0 rgba(255,255,255,0.6), 0 8px 24px rgba(0,0,0,0.06)",
+        })}
       >
         <Typography
           sx={{
@@ -44,17 +50,23 @@ function ImageMeta({ brand, date, description, link }) {
           {date}
         </Typography>
       </Box>
-
-      {/* Description */}
       <Box
-        sx={{
+        sx={(theme) => ({
           p: 2.5,
           borderRadius: 3,
-          background: "rgba(255,255,255,0.65)",
+
+          background:
+            theme.palette.mode === "dark"
+              ? "rgba(28,28,30,0.7)"
+              : "rgba(255,255,255,0.65)",
+
           backdropFilter: "blur(24px)",
+
           boxShadow:
-            "inset 0 1px 0 rgba(255,255,255,0.5), 0 10px 30px rgba(0,0,0,0.08)",
-        }}
+            theme.palette.mode === "dark"
+              ? "inset 0 1px 0 rgba(255,255,255,0.04), 0 10px 30px rgba(0,0,0,0.7)"
+              : "inset 0 1px 0 rgba(255,255,255,0.5), 0 10px 30px rgba(0,0,0,0.08)",
+        })}
       >
         <Typography
           sx={{
@@ -67,21 +79,30 @@ function ImageMeta({ brand, date, description, link }) {
         </Typography>
       </Box>
 
-      {/* Link */}
       {link && (
         <Box
-          sx={{
+          sx={(theme) => ({
             alignSelf: "flex-start",
             px: 2,
             py: 1,
             borderRadius: 999,
-            background: "rgba(0,113,227,0.08)",
+
+            background:
+              theme.palette.mode === "dark"
+                ? "rgba(0,113,227,0.18)"
+                : "rgba(0,113,227,0.08)",
+
             backdropFilter: "blur(10px)",
+
             transition: "all .25s ease",
+
             "&:hover": {
-              background: "rgba(0,113,227,0.14)",
+              background:
+                theme.palette.mode === "dark"
+                  ? "rgba(0,113,227,0.28)"
+                  : "rgba(0,113,227,0.14)",
             },
-          }}
+          })}
         >
           <Link
             href={link}
